@@ -1,4 +1,4 @@
-# Sensitive information
+# Sensitive files
 .env
 *.env
 !.env.template
@@ -7,11 +7,8 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
-# Virtual Environment
 venv/
-env/
-.venv/
+*.egg-info/
 
 # IDE
 .idea/
@@ -19,11 +16,3 @@ env/
 
 # Logs
 *.log
-
-# Local development
-.DS_Store
-
-# Distribution / packaging
-dist/
-build/
-*.egg-info/
