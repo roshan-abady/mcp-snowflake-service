@@ -1,3 +1,1 @@
-# MCP Snowflake Service
-
-A server implementation for connecting MCP with Snowflake databases.
+IyBNQ1AgU25vd2ZsYWtlIFNlcnZpY2UKCkEgc2VydmVyIGltcGxlbWVudGF0aW9uIGZvciBjb25uZWN0aW5nIE1DUCB3aXRoIFNub3dmbGFrZSBkYXRhYmFzZXMu
