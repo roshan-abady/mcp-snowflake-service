@@ -78,7 +78,7 @@ Create a `.env` file in the project root directory and add the following configu
 ```env
 SNOWFLAKE_USER=your_username      # Your username / 您的用户名
 SNOWFLAKE_PASSWORD=your_password  # Your password / 您的密码
-SNOWFLAKE_ACCOUNT=your_account    # Your account / 您的账户
+SNOWFLAKE_ACCOUNT=NRB18479.US-WEST-2    # Example: NRB18479.US-WEST-2 / 示例: NRB18479.US-WEST-2
 SNOWFLAKE_DATABASE=your_database  # Your database / 您的数据库
 SNOWFLAKE_WAREHOUSE=your_warehouse # Your warehouse / 您的数据仓库
 ```
@@ -130,6 +130,8 @@ To contribute code or report issues / 要贡献代码或报告问题，请:
 5. Open a Pull Request / 开启一个 Pull Request
 
 ## License / 许可
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-This project is licensed under the MIT License - see the LICENSE file for details.
-此项目采用 MIT 许可证 - 查看 LICENSE 文件了解详细信息。
+This project is licensed under the [MIT License](LICENSE).
+
+此项目采用 [MIT 许可证](LICENSE)。
