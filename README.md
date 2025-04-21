@@ -1,6 +1,7 @@
 A Model Context Protocol (MCP) server that provides Claude access to Snowflake databases. / 一个为 Claude 提供 Snowflake 数据库访问能力的 MCP (模型上下文协议) 服务器。
 
 ![GitHub Stars](https://img.shields.io/github/stars/datawiz168/mcp-snowflake-service?style=social)
+[![Smithery Badge](https://smithery.ai/badge/@datawiz168/mcp-service-snowflake)](https://smithery.ai/server/@datawiz168/mcp-service-snowflake)
 
 This server implements the Model Context Protocol to allow Claude to:
 - Execute SQL queries on Snowflake databases
@@ -16,6 +17,15 @@ This server implements the Model Context Protocol to allow Claude to:
 
 ## Installation / 安装
 
+### Installing via Smithery
+
+To install mcp-service-snowflake for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@datawiz168/mcp-service-snowflake):
+
+```bash
+npx -y @smithery/cli install @datawiz168/mcp-service-snowflake --client claude
+```
+
+### Manual Installation
 1. Clone this repository / 克隆此仓库
 ```bash
 git clone https://github.com/datawiz168/mcp-snowflake-service.git
