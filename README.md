@@ -141,6 +141,10 @@ To contribute code or report issues / 要贡献代码或报告问题，请:
 4. Push to the branch / 推送到分支 (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request / 开启一个 Pull Request
 
+## notes / 备注
+mcp‑server‑snowflake controls database access rights precisely by way of database users. If you only need to read data, just assign a user with read‑only database permissions./
+mcp-server-snowflake 控制数据库访问权限，是通过数据库用户来精准实现的。如果你只想读取数据，给个只有读取数据库权限的用户就行了。
+
 ## License / 许可
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
