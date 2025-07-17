@@ -4,6 +4,7 @@ import asyncio
 import logging
 import json
 import time
+import getpass
 import snowflake.connector
 from dotenv import load_dotenv
 import mcp.server.stdio
@@ -12,7 +13,7 @@ from mcp.types import Tool, ServerResult, TextContent
 from contextlib import closing
 from typing import Optional, Any
 
-# 配置日志 / Configure logging
+#  / Configure logging
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
@@ -23,28 +24,27 @@ load_dotenv()
 
 class SnowflakeConnection:
     """
-    Snowflake数据库连接管理类
     Snowflake database connection management class
     """
     def __init__(self):
-        # 初始化配置信息 / Initialize configuration
+        # / Initialize configuration
         self.config = {
-            "user": os.getenv("SNOWFLAKE_USER"),
-            "password": os.getenv("SNOWFLAKE_PASSWORD"),
-            "account": os.getenv("SNOWFLAKE_ACCOUNT"),
-            "database": os.getenv("SNOWFLAKE_DATABASE"),
-            "warehouse": os.getenv("SNOWFLAKE_WAREHOUSE"),
+            "user": f"{getpass.getuser()}@myob.com",
+            "password": "",
+            "account": "bu20658.ap-southeast-2",
+            "database": "OPERATIONS_ANALYTICS",
+            "warehouse": "OPERATIONS_ANALYTICS_WAREHOUSE_PROD",
+            "authenticator": "externalbrowser",
         }
         self.conn: Optional[snowflake.connector.SnowflakeConnection] = None
         logger.info(f"Initialized with config (excluding password): {json.dumps({k:v for k,v in self.config.items() if k != 'password'})}")
     
     def ensure_connection(self) -> snowflake.connector.SnowflakeConnection:
         """
-        确保数据库连接可用，如果连接不存在或已断开则重新建立连接
         Ensure database connection is available, create new connection if it doesn't exist or is disconnected
         """
         try:
-            # 检查连接是否需要重新建立 / Check if connection needs to be re-established
+            # / Check if connection needs to be re-established
             if self.conn is None:
                 logger.info("Creating new Snowflake connection...")
                 self.conn = snowflake.connector.connect(
@@ -56,7 +56,7 @@ class SnowflakeConnection:
                 self.conn.cursor().execute("ALTER SESSION SET TIMEZONE = 'UTC'")
                 logger.info("New connection established and configured")
             
-            # 测试连接是否有效 / Test if connection is valid
+            # / Test if connection is valid
             try:
                 self.conn.cursor().execute("SELECT 1")
             except:
@@ -71,22 +71,21 @@ class SnowflakeConnection:
 
     def execute_query(self, query: str) -> list[dict[str, Any]]:
         """
-        执行SQL查询并返回结果
         Execute SQL query and return results
         
         Args:
-            query (str): SQL查询语句 / SQL query statement
+            query (str):  / SQL query statement
             
         Returns:
-            list[dict[str, Any]]: 查询结果列表 / List of query results
+            list[dict[str, Any]]:  / List of query results
         """
         start_time = time.time()
-        logger.info(f"Executing query: {query[:200]}...")  # 只记录前200个字符 / Log only first 200 characters
+        logger.info(f"Executing query: {query[:200]}...")  # / Log only first 200 characters
         
         try:
             conn = self.ensure_connection()
             with conn.cursor() as cursor:
-                # 对于写操作使用事务 / Use transaction for write operations
+                # / Use transaction for write operations
                 if any(query.strip().upper().startswith(word) for word in ['INSERT', 'UPDATE', 'DELETE', 'CREATE', 'DROP', 'ALTER']):
                     cursor.execute("BEGIN")
                     try:
@@ -98,7 +97,7 @@ class SnowflakeConnection:
                         conn.rollback()
                         raise
                 else:
-                    # 读操作 / Read operations
+                    # / Read operations
                     cursor.execute(query)
                     if cursor.description:
                         columns = [col[0] for col in cursor.description]
@@ -119,7 +118,6 @@ class SnowflakeConnection:
 
     def close(self):
         """
-        关闭数据库连接
         Close database connection
         """
         if self.conn:
@@ -133,7 +131,6 @@ class SnowflakeConnection:
 
 class SnowflakeServer(Server):
     """
-    Snowflake MCP服务器类，处理与客户端的交互
     Snowflake MCP server class, handles client interactions
     """
     def __init__(self):
@@ -144,7 +141,6 @@ class SnowflakeServer(Server):
         @self.list_tools()
         async def handle_tools():
             """
-            返回可用工具列表
             Return list of available tools
             """
             return [
@@ -167,15 +163,14 @@ class SnowflakeServer(Server):
         @self.call_tool()
         async def handle_call_tool(name: str, arguments: dict):
             """
-            处理工具调用请求
             Handle tool call requests
             
             Args:
-                name (str): 工具名称 / Tool name
-                arguments (dict): 工具参数 / Tool arguments
+                name (str):  / Tool name
+                arguments (dict):  / Tool arguments
                 
             Returns:
-                list[TextContent]: 执行结果 / Execution results
+                list[TextContent]:  / Execution results
             """
             if name == "execute_query":
                 start_time = time.time()
@@ -197,7 +192,6 @@ class SnowflakeServer(Server):
 
     def __del__(self):
         """
-        清理资源，关闭数据库连接
         Clean up resources, close database connection
         """
         if hasattr(self, 'db'):
@@ -205,7 +199,6 @@ class SnowflakeServer(Server):
 
 async def main():
     """
-    主函数，启动服务器并处理请求
     Main function, starts server and handles requests
     """
     try:
